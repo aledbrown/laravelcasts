@@ -9,9 +9,9 @@ uses(RefreshDatabase::class);
 
 it('shows courses overview', closure: function () {
     // Arrange
-    Course::factory()->create(['title' => 'Course A', 'description' => 'Description Course A']);
-    Course::factory()->create(['title' => 'Course B', 'description' => 'Description Course B']);
-    Course::factory()->create(['title' => 'Course C', 'description' => 'Description Course C']);
+    Course::factory()->create(['title' => 'Course A', 'description' => 'Description Course A', 'released_at' => Carbon::now()]);
+    Course::factory()->create(['title' => 'Course B', 'description' => 'Description Course B', 'released_at' => Carbon::now()]);
+    Course::factory()->create(['title' => 'Course C', 'description' => 'Description Course C', 'released_at' => Carbon::now()]);
 
     // Act & Assert
     get(route('home'))
