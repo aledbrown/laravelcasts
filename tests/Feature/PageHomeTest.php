@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\get;
 
@@ -26,10 +27,19 @@ it('shows courses overview', closure: function () {
 
 it('shows only released courses', function () {
     // Arrange
+    Course::factory()->create(['title' => 'Course A', 'released_at' => Carbon::yesterday()]);
+    Course::factory()->create(['title' => 'Course B']);
 
-    // Act
+    // Act & Assert
+    get(route('home'))
+        ->assertSeeText([
+            'Course A'
+        ]);
 
-    // Assert
+    get(route('home'))
+        ->assertDontSee([
+            'Course B'
+        ]);
 });
 
 it('shows courses by release date', function () {
