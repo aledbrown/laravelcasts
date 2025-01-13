@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // })->name('home');
 
-Route::get('/', PageHomeController::class)->name('home');
+Route::get('/', PageHomeController::class)->name('pages.home');
 
-Route::get('courses/{course:slug}', PageCourseDetailsController::class)->name('course-details');
+Route::get('courses/{course:slug}', PageCourseDetailsController::class)->name('pages.course-details');
 
 // Route::middleware([
 //     'auth:sanctum',
