@@ -11,6 +11,10 @@ class Course extends Model
     /** @use HasFactory<\Database\Factories\CourseFactory> */
     use HasFactory;
 
+    public $casts = [
+        'learnings' => 'array',
+    ];
+
     public function scopeReleased(Builder $query): Builder
     {
         return $query->whereNotNull('released_at');
