@@ -34,3 +34,8 @@ it('gives back successful response for dashboard page', function () {
     get(route('pages.dashboard'))
         ->assertOk();
 });
+
+it('does not find JetStream registration page', function () {
+    // Act & Assert
+    get('/register')->assertNotFound();
+});
