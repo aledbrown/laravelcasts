@@ -6,36 +6,26 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-
 it('shows details for given video', function () {
     // Arrange
-    $course = Course::factory()
-        ->has(Video::factory()->state([
-            'title' => 'Video title',
-            'description' => 'Video description',
-            'duration' => 10,
-        ]))
-        ->create();
+    $course = Course::factory()->has(Video::factory())->create();
 
     // Act & Assert
-    Livewire::test(\App\Livewire\VideoPlayer::class, ['video' => $course->videos->first()])
+    $video = $course->videos->first();
+    Livewire::test(\App\Livewire\VideoPlayer::class, ['video' => $video])
         ->assertSeeText([
-            'Video title',
-            'Video description',
-            '10min',
+            $video->title,
+            $video->description,
+            "({$video->duration_in_min} min)",
         ]);
 });
 
 it('shows given video', function () {
     // Arrange
-    $course = Course::factory()
-        ->has(Video::factory()->state([
-            'vimeo_id' => 'vimdeo-id',
-        ]))
-        ->create();
+    $course = Course::factory()->has(Video::factory())->create();
 
     // Act & Assert
-    Livewire::test(\App\Livewire\VideoPlayer::class, ['video' => $course->videos->first()])
-        ->assertSee('<iframe src="https://player.vimeo.com/video/vimdeo-id"', false);
-
+    $video = $course->videos->first();
+    Livewire::test(\App\Livewire\VideoPlayer::class, ['video' => $video])
+        ->assertSeeHtml('<iframe src="https://player.vimeo.com/video/'.$video->vimeo_id.'"');
 });

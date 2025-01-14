@@ -6,7 +6,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-
 it('has courses', function () {
     // Arrange
     $user = User::factory()

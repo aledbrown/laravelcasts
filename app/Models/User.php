@@ -74,5 +74,4 @@ class User extends Authenticatable
             ->withTimestamps()
             ->orderByPivot('created_at', 'desc');
     }
-
 }
