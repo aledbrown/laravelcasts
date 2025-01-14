@@ -1,0 +1,38 @@
+<?php
+
+
+use App\Livewire\VideoPlayer;
+use App\Models\Course;
+use function Pest\Laravel\get;
+
+it('cannot be accessed by guest', function () {
+    // Arrange
+    $course = Course::factory()->create();
+
+    // Act & Assert
+    get(route('pages.course-videos', $course))
+        ->assertRedirect(route('login'));
+});
+
+it('includes video player', function () {
+    // Arrange
+    $course = Course::factory()->create();
+
+    // Act & Assert
+    loginAsUser();
+    get(route('pages.course-videos', $course))
+        ->assertOk()
+        ->assertSeeLivewire(VideoPlayer::class);
+});
+
+it('shows first course video by default', function () {
+    // Arrange
+
+    // Act & Assert
+});
+
+it('shows provided course video', function () {
+    // Arrange
+
+    // Act & Assert
+});
