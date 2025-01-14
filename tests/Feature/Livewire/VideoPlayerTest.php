@@ -88,6 +88,24 @@ it('marks video as completed', function () {
 
 it('marks video as not completed', function () {
     // Arrange
+    $user = User::factory()->create();
+    $course = Course::factory()
+        ->has(Video::factory()->state(['title' => 'Course Video']))
+        ->create();
+
+    $user->courses()->attach($course);
+    $user->videos()->attach($course->videos()->first());
+
+    // Assert
+    expect($user->videos)->toHaveCount(1);
 
     // Act & Assert
+    loginAsUser($user);
+    Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
+        ->call('markVideoAsNotCompleted');
+
+    // Assert
+    $user->refresh();
+    expect($user->videos)
+        ->toHaveCount(0);
 });
