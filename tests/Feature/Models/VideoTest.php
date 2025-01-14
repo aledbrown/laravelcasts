@@ -1,9 +1,22 @@
 <?php
 
+use App\Models\Course;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
+
+it('belongs to a course', function () {
+    // Arrange
+    $video = Video::factory()
+        ->has(Course::factory())
+        ->create();
+
+    // Act & Assert
+    expect($video->course)
+        ->toBeInstanceOf(Course::class);
+});
+
 
 it('gives back readable video duration', function () {
     // Arrange

@@ -12,13 +12,15 @@ class Video extends Model
     /** @use HasFactory<\Database\Factories\VideoFactory> */
     use HasFactory;
 
-    public function course(): BelongsTo
-    {
-        return $this->belongsTo(Course::class);
-    }
-
+    // METHODS
     public function getReadableDuration(): string
     {
         return Str::of($this->duration_in_min)->append(' min');
+    }
+
+    // RELATIONSHIPS
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
     }
 }
