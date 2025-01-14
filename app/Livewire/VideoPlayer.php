@@ -19,4 +19,15 @@ class VideoPlayer extends Component
     {
         return view('livewire.video-player');
     }
+
+    public function nextVideo()
+    {
+        $this->video = $this->courseVideos->firstWhere('id', '>', $this->video->id);
+    }
+
+    public function markVideoAsCompleted(): void
+    {
+        auth()->user()->videos()->attach($this->video);
+    }
+
 }

@@ -2,6 +2,7 @@
 
 use App\Livewire\VideoPlayer;
 use App\Models\Course;
+use App\Models\User;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -59,4 +60,34 @@ it('shows list of all course videos', function () {
             route('pages.course-videos', Video::where('title', 'Second Video')->first()),
             route('pages.course-videos', Video::where('title', 'Third Video')->first()),
         ]);
+});
+
+it('marks video as completed', function () {
+    // Arrange
+    $user = User::factory()->create();
+    $course = Course::factory()
+        ->has(Video::factory()->state(['title' => 'Course Video']))
+        ->create();
+
+    $user->courses()->attach($course);
+
+    // Assert
+    expect($user->videos)->toHaveCount(0);
+
+    // Act & Assert
+    loginAsUser($user);
+    Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
+        ->call('markVideoAsCompleted');
+
+    // Assert
+    $user->refresh();
+    expect($user->videos)
+        ->toHaveCount(1)
+        ->first()->title->toEqual('Course Video');
+});
+
+it('marks video as not completed', function () {
+    // Arrange
+
+    // Act & Assert
 });
