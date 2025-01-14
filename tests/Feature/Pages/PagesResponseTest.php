@@ -31,6 +31,6 @@ it('gives back successful response for dashboard page', function () {
     $this->actingAs($user);
 
     // Assert
-    get(route('dashboard'))
+    get(route('pages.dashboard'))
         ->assertOk();
 });
