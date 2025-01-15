@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -20,6 +21,9 @@ it('add given courses', function () {
 });
 
 it('adds given courses only once', function () {
+    // Assert
+    $this->assertDatabaseCount(Course::class, 0);
+
     // Act
     $this->artisan('db:seed');
     $this->artisan('db:seed');
@@ -29,13 +33,31 @@ it('adds given courses only once', function () {
 });
 
 it('adds given videos', function () {
-    // Arrange
+    // Assert
+    $this->assertDatabaseCount(Video::class, 0);
 
-    // Act & Assert
+    // Arrange
+    $this->artisan('db:seed');
+
+    // Assert
+    $laravelForBeginnersCourse = Course::where('title', 'Laravel For Beginners')->firstOrFail();
+    $advancedLaravelCourse = Course::where('title', 'Advanced Laravel')->firstOrFail();
+    $tddTheLaravelWayCourse = Course::where('title', 'TDD The Laravel Way')->firstOrFail();
+
+    $this->assertDatabaseCount(Video::class, 8);
+    expect($laravelForBeginnersCourse->videos)->toHaveCount(3);
+    expect($advancedLaravelCourse->videos)->toHaveCount(3);
+    expect($tddTheLaravelWayCourse)->videos->toHaveCount(2);
 });
 
 it('adds given videos only once', function () {
-    // Arrange
+    // Assert
+    $this->assertDatabaseCount(Video::class, 0);
 
-    // Act & Assert
+    // Act
+    $this->artisan('db:seed');
+    $this->artisan('db:seed');
+
+    // Assert
+    $this->assertDatabaseCount(Video::class, 8);
 });
