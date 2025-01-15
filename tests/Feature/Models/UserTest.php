@@ -19,7 +19,7 @@ it('has courses', function () {
         ->each->toBeInstanceOf(Course::class);
 });
 
-it('user has videos', function () {
+it('has videos', function () {
     // Arrange
     $user = User::factory()
         ->has(Video::factory()->count(2), 'watchedVideos')
