@@ -20,9 +20,12 @@ it('add given courses', function () {
 });
 
 it('adds given courses only once', function () {
-    // Arrange
+    // Act
+    $this->artisan('db:seed');
+    $this->artisan('db:seed');
 
-    // Act & Assert
+    // Assert
+    $this->assertDatabaseCount(Course::class, 3);
 });
 
 it('adds given videos', function () {
