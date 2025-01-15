@@ -17,7 +17,6 @@ it('belongs to a course', function () {
         ->toBeInstanceOf(Course::class);
 });
 
-
 it('gives back readable video duration', function () {
     // Arrange
     $video = Video::factory()->create(

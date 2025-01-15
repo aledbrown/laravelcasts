@@ -2,12 +2,14 @@
 
 namespace App\Livewire;
 
+use App\Models\Video;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class VideoPlayer extends Component
 {
     public $video;
+
     public $courseVideos;
 
     public function mount($video)
@@ -35,4 +37,8 @@ class VideoPlayer extends Component
         auth()->user()->watchedVideos()->detach($this->video);
     }
 
+    public function isCurrentVideo(Video $videoToCheck): bool
+    {
+        return $this->video->id === $videoToCheck->id;
+    }
 }

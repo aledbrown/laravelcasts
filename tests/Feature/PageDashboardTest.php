@@ -23,7 +23,7 @@ it('lists purchased courses', function () {
             new Sequence(
                 ['title' => 'Course A'],
                 ['title' => 'Course B'],
-            )),'purchasedCourses')
+            )), 'purchasedCourses')
         ->create();
 
     // Act & Assert
