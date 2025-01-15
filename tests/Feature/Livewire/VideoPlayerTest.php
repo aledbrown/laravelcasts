@@ -67,7 +67,7 @@ it('marks video as completed', function () {
         // ->has(Video::factory()->state(['title' => 'Course Video']))->create();
         ->has(Video::factory())->create();
 
-    $user->courses()->attach($course);
+    $user->purchasedCourses()->attach($course);
 
     // Assert
     expect($user->watchedVideos)->toHaveCount(0);
@@ -90,7 +90,7 @@ it('marks video as not completed', function () {
     $course = Course::factory()
         ->has(Video::factory())->create();
 
-    $user->courses()->attach($course);
+    $user->purchasedCourses()->attach($course);
     $user->watchedVideos()->attach($course->videos()->first());
 
     // Assert
