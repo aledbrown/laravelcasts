@@ -51,14 +51,12 @@ it('shows list of all course videos', function () {
     // Act & Assert
     Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
         ->assertSee([
-            'First Video',
-            'Second Video',
-            'Third Video',
+            ...$course->videos->pluck('title')->toArray(),
         ])
         ->assertSeeHtml([
-            route('pages.course-videos', Video::where('title', 'First Video')->first()),
-            route('pages.course-videos', Video::where('title', 'Second Video')->first()),
-            route('pages.course-videos', Video::where('title', 'Third Video')->first()),
+            route('pages.course-videos', $course->videos[0]),
+            route('pages.course-videos', $course->videos[1]),
+            route('pages.course-videos', $course->videos[2]),
         ]);
 });
 
@@ -66,13 +64,13 @@ it('marks video as completed', function () {
     // Arrange
     $user = User::factory()->create();
     $course = Course::factory()
-        ->has(Video::factory()->state(['title' => 'Course Video']))
-        ->create();
+        // ->has(Video::factory()->state(['title' => 'Course Video']))->create();
+        ->has(Video::factory())->create();
 
     $user->courses()->attach($course);
 
     // Assert
-    expect($user->videos)->toHaveCount(0);
+    expect($user->watchedVideos)->toHaveCount(0);
 
     // Act & Assert
     loginAsUser($user);
@@ -81,23 +79,22 @@ it('marks video as completed', function () {
 
     // Assert
     $user->refresh();
-    expect($user->videos)
+    expect($user->watchedVideos)
         ->toHaveCount(1)
-        ->first()->title->toEqual('Course Video');
+        ->first()->title->toEqual($course->videos()->first()->title);
 });
 
 it('marks video as not completed', function () {
     // Arrange
     $user = User::factory()->create();
     $course = Course::factory()
-        ->has(Video::factory()->state(['title' => 'Course Video']))
-        ->create();
+        ->has(Video::factory())->create();
 
     $user->courses()->attach($course);
-    $user->videos()->attach($course->videos()->first());
+    $user->watchedVideos()->attach($course->videos()->first());
 
     // Assert
-    expect($user->videos)->toHaveCount(1);
+    expect($user->watchedVideos)->toHaveCount(1);
 
     // Act & Assert
     loginAsUser($user);
@@ -106,6 +103,6 @@ it('marks video as not completed', function () {
 
     // Assert
     $user->refresh();
-    expect($user->videos)
+    expect($user->watchedVideos)
         ->toHaveCount(0);
 });
