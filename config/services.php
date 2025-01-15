@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'paddle' => [
+        'vendor-id' => env('PADDLE_VENDOR_ID'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

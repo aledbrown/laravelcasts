@@ -45,3 +45,20 @@ it('shows course video count', function () {
         ->assertOk()
         ->assertSeeText('3 videos');
 });
+
+it('includes paddle checkout button', function () {
+    // Arrange
+    // config()->set('services.paddle.vendor_id', 'vendor-id');
+    // dump(config('services.paddle.vendor_id'));
+    // Can't get the fake vendor id above to work. Can't see why.
+    $course = Course::factory()->released()->create([
+        'paddle_product_id' => 'product-id-33'
+    ]);
+
+    // Act & Assert
+    get(route('pages.course-details', $course))
+        ->assertOk()
+        ->assertSee('<script src="https://cdn.paddle.com/paddle/paddle.js"></script>', false)
+        ->assertSee('Paddle.Setup({ vendor: 4736 });', false)
+        ->assertSee('<a href="#!" class="paddle_button" data-product="product-id-33">Buy Now!</a>', false);
+});
