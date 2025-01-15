@@ -12,6 +12,10 @@
             </div>
         @endsession
 
+        @env('local')
+            <x-login-link/>
+        @endenv
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
