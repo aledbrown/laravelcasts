@@ -14,9 +14,14 @@ function createCourseAndVideos(int $videosCount = 1): Course
     return Course::factory()->has(Video::factory($videosCount))->create();
 }
 
+// beforeEach(function () {
+//     loginAsUser();
+// });
+
 it('shows details for given video', function () {
     // Arrange
     $course = createCourseAndVideos(1);
+    loginAsUser();
 
     // Act & Assert
     $video = $course->videos->first();
@@ -31,6 +36,7 @@ it('shows details for given video', function () {
 it('shows given video', function () {
     // Arrange
     $course = createCourseAndVideos(1);
+    loginAsUser();
 
     // Act & Assert
     $video = $course->videos->first();
@@ -53,7 +59,7 @@ it('shows list of all course videos', function () {
     //     )
     //     ->create();
     $course = createCourseAndVideos(videosCount: 3);
-
+    loginAsUser();
 
     // Act & Assert
     Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
@@ -70,6 +76,7 @@ it('shows list of all course videos', function () {
 it('does not include route for current video', function () {
     // Arrange
     $course = createCourseAndVideos(videosCount: 1);
+    loginAsUser();
 
     // Act & Assert
     Livewire::test(VideoPlayer::class, ['video' => $course->videos()->first()])
@@ -127,4 +134,24 @@ it('marks video as not completed', function () {
     $user->refresh();
     expect($user->watchedVideos)
         ->toHaveCount(0);
+});
+
+it('tells if current user not yet watched a given video', function () {
+    // Arrange
+    $video = Video::factory()->create();
+
+    // Act & Assert
+    loginAsUser();
+    expect($video->alreadyWatchedByCurrentUser())->toBeFalse();
+});
+
+it('tells if current user has watched a given video', function () {
+    // Arrange
+    $user = User::factory()
+        ->has(Video::factory(), 'watchedVideos')
+        ->create();
+
+    // Act & Assert
+    loginAsUser($user);
+    expect($user->watchedVideos()->first()->alreadyWatchedByCurrentUser())->toBeTrue();
 });
