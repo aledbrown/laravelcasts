@@ -68,8 +68,8 @@ it('shows list of all course videos', function () {
         ])
         ->assertSeeHtml([
             // removed check for link to current video because we don't show one
-            route('pages.course-videos', $course->videos[1]),
-            route('pages.course-videos', $course->videos[2]),
+            route('pages.course-videos', [ 'course' => $course, 'video' => $course->videos[1] ]),
+            route('pages.course-videos', [ 'course' => $course, 'video' => $course->videos[2] ]),
         ]);
 });
 

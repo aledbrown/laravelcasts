@@ -13,7 +13,13 @@
         @endsession
 
         @env('local')
-            <x-login-link/>
+            <x-login-link
+                email="test@test.com"
+                label="Test login"
+                :redirect-url="route('pages.dashboard')"
+            />
+            <br />
+
         @endenv
 
         <form method="POST" action="{{ route('login') }}">
